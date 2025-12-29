@@ -1,0 +1,204 @@
+<% layout("/layouts/boilerplate") %>
+
+  <div class="row mt-4">
+    <div class="col-8 offset-2">
+      <h3>Edit Listing</h3>
+      <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate
+        enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input name="listing[title]" class="form-control" value="<%= listing.title %>" type="text" required />
+          <div class="invalid-feedback">Please enter a title.</div>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="listing[description]" class="form-control" required>
+<%= listing.description %></textarea>
+          <div class="invalid-feedback">Please enter a description.</div>
+        </div>
+
+
+
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload New Image</label>
+          <input id="image" name="listing[image]" class="form-control" value="<%= listing.image.url %>" type="file" />
+
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input id="price" name="listing[price]" class="form-control" placeholder="1200" value="<%= listing.price %>"
+              type="number" required min="0" />
+            <div class="invalid-feedback">
+              Price must be a valid non-negative number.
+            </div>
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input id="country" name="listing[country]" class="form-control" value="<%= listing.country %>" type="text"
+              required />
+            <div class="invalid-feedback">Please enter a country name.</div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input id="location" name="listing[location]" class="form-control" value="<%= listing.location %>" type="text"
+            required />
+          <div class="invalid-feedback">Please enter a location.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="sqFeet" class="form-label">Square Feet</label>
+          <input id="sqFeet" name="listing[sqFeet]" class="form-control" value="<%= listing.sqFeet || '' %>"
+            type="number" min="1" />
+          <div class="invalid-feedback">Please enter area in square feet.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="propertyType" class="form-label">Property Type</label>
+          <select id="propertyType" name="listing[propertyType]" class="form-control">
+            <option value="">Select Property Type</option>
+            <option value="Flat" <%=listing.propertyType==='Flat' ? 'selected' : '' %>>Flat</option>
+            <option value="Zameen" <%=listing.propertyType==='Zameen' ? 'selected' : '' %>>Zameen</option>
+            <option value="Room" <%=listing.propertyType==='Room' ? 'selected' : '' %>>Room</option>
+            <option value="1BHK" <%=listing.propertyType==='1BHK' ? 'selected' : '' %>>1BHK</option>
+            <option value="2BHK" <%=listing.propertyType==='2BHK' ? 'selected' : '' %>>2BHK</option>
+            <option value="Home" <%=listing.propertyType==='Home' ? 'selected' : '' %>>Home</option>
+            <option value="Shop" <%=listing.propertyType==='Shop' ? 'selected' : '' %>>Shop</option>
+          </select>
+        </div>
+
+        <!-- Additional Property Details -->
+        <h5 class="mt-4 mb-3"><strong>Property Features</strong></h5>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="totalFloors" class="form-label">Total Floors</label>
+            <input id="totalFloors" name="listing[totalFloors]" class="form-control"
+              value="<%= listing.totalFloors || '' %>" placeholder="e.g., 2 Floors" type="text" />
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="facing" class="form-label">Facing</label>
+            <select id="facing" name="listing[facing]" class="form-control">
+              <option value="">Select Facing</option>
+              <option value="North" <%=listing.facing==='North' ? 'selected' : '' %>>North</option>
+              <option value="South" <%=listing.facing==='South' ? 'selected' : '' %>>South</option>
+              <option value="East" <%=listing.facing==='East' ? 'selected' : '' %>>East</option>
+              <option value="West" <%=listing.facing==='West' ? 'selected' : '' %>>West</option>
+              <option value="North-East" <%=listing.facing==='North-East' ? 'selected' : '' %>>North-East</option>
+              <option value="North-West" <%=listing.facing==='North-West' ? 'selected' : '' %>>North-West</option>
+              <option value="South-East" <%=listing.facing==='South-East' ? 'selected' : '' %>>South-East</option>
+              <option value="South-West" <%=listing.facing==='South-West' ? 'selected' : '' %>>South-West</option>
+            </select>
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="overlooking" class="form-label">Overlooking</label>
+            <input id="overlooking" name="listing[overlooking]" class="form-control"
+              value="<%= listing.overlooking || '' %>" placeholder="e.g., Main Road, Garden" type="text" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="furnishing" class="form-label">Furnishing</label>
+            <select id="furnishing" name="listing[furnishing]" class="form-control">
+              <option value="">Select Furnishing</option>
+              <option value="Furnished" <%=listing.furnishing==='Furnished' ? 'selected' : '' %>>Furnished</option>
+              <option value="Semi-Furnished" <%=listing.furnishing==='Semi-Furnished' ? 'selected' : '' %>
+                >Semi-Furnished</option>
+              <option value="Unfurnished" <%=listing.furnishing==='Unfurnished' ? 'selected' : '' %>>Unfurnished
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="flooring" class="form-label">Flooring</label>
+            <input id="flooring" name="listing[flooring]" class="form-control" value="<%= listing.flooring || '' %>"
+              placeholder="e.g., Vitrified, Marble" type="text" />
+          </div>
+
+          <div class="mb-3 col-md-4">
+            <label for="propertyOwnership" class="form-label">Property Ownership</label>
+            <select id="propertyOwnership" name="listing[propertyOwnership]" class="form-control">
+              <option value="">Select Ownership</option>
+              <option value="Freehold" <%=listing.propertyOwnership==='Freehold' ? 'selected' : '' %>>Freehold</option>
+              <option value="Leasehold" <%=listing.propertyOwnership==='Leasehold' ? 'selected' : '' %>>Leasehold
+              </option>
+              <option value="Co-operative Society" <%=listing.propertyOwnership==='Co-operative Society' ? 'selected'
+                : '' %>>Co-operative Society</option>
+              <option value="Power of Attorney" <%=listing.propertyOwnership==='Power of Attorney' ? 'selected' : '' %>
+                >Power of Attorney</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="widthOfFacingRoad" class="form-label">Width of Facing Road</label>
+            <input id="widthOfFacingRoad" name="listing[widthOfFacingRoad]" class="form-control"
+              value="<%= listing.widthOfFacingRoad || '' %>" placeholder="e.g., 25 Feet" type="text" />
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label for="parking" class="form-label">Parking</label>
+            <input id="parking" name="listing[parking]" class="form-control" value="<%= listing.parking || '' %>"
+              placeholder="e.g., 1 Covered, 1 Open" type="text" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="listing[gatedCommunity]" id="gatedCommunity"
+                value="true" <%=listing.gatedCommunity ? 'checked' : '' %>>
+              <label class="form-check-label" for="gatedCommunity">
+                Gated Community
+              </label>
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="listing[cornerProperty]" id="cornerProperty"
+                value="true" <%=listing.cornerProperty ? 'checked' : '' %>>
+              <label class="form-check-label" for="cornerProperty">
+                Corner Property
+              </label>
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="listing[park]" id="park" value="true"
+                <%=listing.park ? 'checked' : '' %>>
+              <label class="form-check-label" for="park">
+                Park Available
+              </label>
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="listing[swimming]" id="swimming" value="true"
+                <%=listing.swimming ? 'checked' : '' %>>
+              <label class="form-check-label" for="swimming">
+                Swimming Pool
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="keyHighlights" class="form-label">Key Highlights</label>
+          <textarea id="keyHighlights" name="listing[keyHighlights]" class="form-control" rows="3"
+            placeholder="Enter key highlights separated by commas"><%= listing.keyHighlights ? listing.keyHighlights.join(', ') : '' %></textarea>
+          <small class="text-muted">Separate multiple highlights with commas</small>
+        </div>
+
+        <button class="mb-3 mt-3 btn edit-btn btn-dark">Update</button>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,307 @@
+<% layout("/layouts/boilerplate") %>
+
+  <div class="container mt-4 mb-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <h2 class="mb-3"><strong>Create New Property Listing</strong></h2>
+        <p class="text-muted">Fill in the details below to list your property on our platform</p>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="card shadow-sm p-5">
+          <form method="POST" class="needs-validation" action="/listings" novalidate enctype="multipart/form-data">
+
+            <!-- Title Section -->
+            <div class="mb-4">
+              <h5 class="mb-3"><strong>Property Information</strong></h5>
+
+              <div class="mb-3">
+                <label for="listingTitle" class="form-label"><strong>Title</strong></label>
+                <input name="listing[title]" id="listingTitle"
+                  placeholder="e.g., Beautiful 3BHK Apartment in Jankipuram" type="text" class="form-control" required>
+                <div class="invalid-feedback">Please enter a title for your property.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="listingDescription" class="form-label"><strong>Description</strong></label>
+                <textarea name="listing[description]" id="listingDescription"
+                  placeholder="Describe your property in detail - location highlights, amenities, condition, etc."
+                  class="form-control" rows="5" required></textarea>
+                <div class="invalid-feedback">Please enter a description.</div>
+              </div>
+            </div>
+
+            <!-- Property Type & Images -->
+            <div class="mb-4">
+              <h5 class="mb-3"><strong>Property Type & Images</strong></h5>
+
+              <div class="mb-3">
+                <label for="listingPropertyType" class="form-label"><strong>Property Type</strong></label>
+                <select name="listing[propertyType]" id="listingPropertyType" class="form-control form-select" required>
+                  <option value="">Select Property Type</option>
+                  <option value="Flat">Flat</option>
+                  <option value="Zameen">Zameen</option>
+                  <option value="Room">Room</option>
+                  <option value="1BHK">1BHK</option>
+                  <option value="2BHK">2BHK</option>
+                  <option value="Home">Home</option>
+                  <option value="Shop">Shop</option>
+                </select>
+                <div class="invalid-feedback">Please select a property type.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="listingImages" class="form-label"><strong>Upload Multiple Images</strong></label>
+                <div class="input-group">
+                  <input name="listing[images]" id="listingImages" type="file" class="form-control" accept="image/*"
+                    multiple required>
+                </div>
+                <small class="text-muted d-block mt-2">
+                  <i class="bi bi-info-circle"></i> Upload up to 20 images. Select multiple files at once or add them
+                  one by one.
+                  Recommended: Clear, well-lit photos from different angles of your property
+                </small>
+                <div class="invalid-feedback">Please upload at least one image.</div>
+              </div>
+
+              <!-- Image Preview Section -->
+              <div class="mb-3">
+                <label class="form-label"><strong>Preview Images</strong></label>
+                <div id="imagePreview" class="row g-3">
+                  <p class="text-muted" id="noImagesMsg">No images selected yet</p>
+                </div>
+              </div>
+            </div>
+
+            <script>
+              const imageInput = document.getElementById('listingImages');
+              const imagePreview = document.getElementById('imagePreview');
+              const noImagesMsg = document.getElementById('noImagesMsg');
+
+              imageInput.addEventListener('change', function (e) {
+                imagePreview.innerHTML = '';
+                noImagesMsg.style.display = 'none';
+
+                const files = Array.from(this.files);
+
+                if (files.length > 20) {
+                  alert('Maximum 20 images allowed. Only first 20 images will be uploaded.');
+                  this.files = files.slice(0, 20);
+                }
+
+                if (files.length === 0) {
+                  noImagesMsg.style.display = 'block';
+                  return;
+                }
+
+                files.forEach((file, index) => {
+                  const reader = new FileReader();
+                  reader.onload = function (event) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4 col-sm-6';
+                    col.innerHTML = `
+                      <div class="card h-100 shadow-sm">
+                        <img src="${event.target.result}" class="card-img-top" alt="Preview ${index + 1}" 
+                          style="height: 200px; object-fit: cover;">
+                        <div class="card-body p-2">
+                          <p class="mb-0 small text-truncate" title="${file.name}">
+                            <strong>${file.name}</strong>
+                          </p>
+                          <small class="text-muted">${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+                        </div>
+                      </div>
+                    `;
+                    imagePreview.appendChild(col);
+                  };
+                  reader.readAsDataURL(file);
+                });
+              });
+            </script>
+
+            <!-- Pricing & Location -->
+            <div class="mb-4">
+              <h5 class="mb-3"><strong>Pricing & Location</strong></h5>
+
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="listingPrice" class="form-label"><strong>Price</strong></label>
+                  <div class="input-group">
+                    <span class="input-group-text">₹</span>
+                    <input name="listing[price]" id="listingPrice" placeholder="0" type="number" min="0"
+                      class="form-control" required>
+                  </div>
+                  <div class="invalid-feedback">Please enter a valid price.</div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="listingSqFeet" class="form-label"><strong>Square Feet (Area)</strong></label>
+                  <div class="input-group">
+                    <input name="listing[sqFeet]" id="listingSqFeet" placeholder="0" type="number" min="1"
+                      class="form-control" required>
+                    <span class="input-group-text">sq.ft.</span>
+                  </div>
+                  <div class="invalid-feedback">Please enter the area in square feet.</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="listingCountry" class="form-label"><strong>Country</strong></label>
+                  <input name="listing[country]" id="listingCountry" placeholder="e.g., India" type="text"
+                    class="form-control" required>
+                  <div class="invalid-feedback">Please enter a country.</div>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="listingLocation" class="form-label"><strong>Location/Address</strong></label>
+                  <input name="listing[location]" id="listingLocation" placeholder="e.g., Jankipuram Extension, Lucknow"
+                    type="text" class="form-control" required>
+                  <div class="invalid-feedback">Please enter a location.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Property Details -->
+            <div class="mb-4">
+              <h5 class="mb-3"><strong>Property Features</strong></h5>
+
+              <div class="row">
+                <div class="mb-3 col-md-4">
+                  <label for="totalFloors" class="form-label"><strong>Total Floors</strong></label>
+                  <input name="listing[totalFloors]" id="totalFloors" placeholder="e.g., 2 Floors" type="text"
+                    class="form-control">
+                </div>
+
+                <div class="mb-3 col-md-4">
+                  <label for="facing" class="form-label"><strong>Facing</strong></label>
+                  <select name="listing[facing]" id="facing" class="form-control form-select">
+                    <option value="">Select Facing</option>
+                    <option value="North">North</option>
+                    <option value="South">South</option>
+                    <option value="East">East</option>
+                    <option value="West">West</option>
+                    <option value="North-East">North-East</option>
+                    <option value="North-West">North-West</option>
+                    <option value="South-East">South-East</option>
+                    <option value="South-West">South-West</option>
+                  </select>
+                </div>
+
+                <div class="mb-3 col-md-4">
+                  <label for="overlooking" class="form-label"><strong>Overlooking</strong></label>
+                  <input name="listing[overlooking]" id="overlooking" placeholder="e.g., Main Road, Garden" type="text"
+                    class="form-control">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-4">
+                  <label for="furnishing" class="form-label"><strong>Furnishing</strong></label>
+                  <select name="listing[furnishing]" id="furnishing" class="form-control form-select">
+                    <option value="">Select Furnishing</option>
+                    <option value="Furnished">Furnished</option>
+                    <option value="Semi-Furnished">Semi-Furnished</option>
+                    <option value="Unfurnished">Unfurnished</option>
+                  </select>
+                </div>
+
+                <div class="mb-3 col-md-4">
+                  <label for="flooring" class="form-label"><strong>Flooring</strong></label>
+                  <input name="listing[flooring]" id="flooring" placeholder="e.g., Vitrified, Marble" type="text"
+                    class="form-control">
+                </div>
+
+                <div class="mb-3 col-md-4">
+                  <label for="propertyOwnership" class="form-label"><strong>Property Ownership</strong></label>
+                  <select name="listing[propertyOwnership]" id="propertyOwnership" class="form-control form-select">
+                    <option value="">Select Ownership</option>
+                    <option value="Freehold">Freehold</option>
+                    <option value="Leasehold">Leasehold</option>
+                    <option value="Co-operative Society">Co-operative Society</option>
+                    <option value="Power of Attorney">Power of Attorney</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="widthOfFacingRoad" class="form-label"><strong>Width of Facing Road</strong></label>
+                  <input name="listing[widthOfFacingRoad]" id="widthOfFacingRoad" placeholder="e.g., 25 Feet"
+                    type="text" class="form-control">
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="parking" class="form-label"><strong>Parking</strong></label>
+                  <input name="listing[parking]" id="parking" placeholder="e.g., 1 Covered, 1 Open" type="text"
+                    class="form-control">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-3">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="listing[gatedCommunity]" id="gatedCommunity"
+                      value="true">
+                    <label class="form-check-label" for="gatedCommunity">
+                      <strong>Gated Community</strong>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3 col-md-3">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="listing[cornerProperty]" id="cornerProperty"
+                      value="true">
+                    <label class="form-check-label" for="cornerProperty">
+                      <strong>Corner Property</strong>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3 col-md-3">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="listing[park]" id="park" value="true">
+                    <label class="form-check-label" for="park">
+                      <strong>Park Available</strong>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="mb-3 col-md-3">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="listing[swimming]" id="swimming" value="true">
+                    <label class="form-check-label" for="swimming">
+                      <strong>Swimming Pool</strong>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="keyHighlights" class="form-label"><strong>Key Highlights</strong></label>
+                <textarea name="listing[keyHighlights]" id="keyHighlights" rows="3" class="form-control"
+                  placeholder="Enter key highlights separated by commas (e.g., East Facing, Private Garden, Wheel Chair Friendly)"></textarea>
+                <small class="text-muted">Separate multiple highlights with commas</small>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 pt-3">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <strong>Create Listing</strong>
+              </button>
+            </div>
+
+            <div class="text-center mt-3">
+              <p class="text-muted small">Once created, you can edit or delete your listing anytime</p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

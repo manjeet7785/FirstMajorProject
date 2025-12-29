@@ -1,0 +1,48 @@
+<nav class="navbar  navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" href="/listings">
+            <p class="NavHome">Home</p>
+
+          </a>
+        </li>
+
+
+
+      </ul>
+    </div>
+
+
+    <div class="navbar-nav ">
+      <form class="d-flex" role="search" id="Form-search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+
+
+
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link" href="/listings/new">Add New Listing</a>
+
+      <% if(!currUser) { %>
+
+        <a href="/signup" class="nav-link nav-action-link">Sign up</a>
+        <a href="/login" class="nav-link nav-action-link">Log in</a>
+
+        <% } %>
+
+          <% if(currUser) { %>
+            <a href="/logout" class="nav-link nav-action-link">Log Out</a>
+
+            <% } %>
+    </div>
+
+  </div>
+</nav>
