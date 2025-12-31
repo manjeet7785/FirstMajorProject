@@ -9,11 +9,7 @@ const { isLoggedIn } = require("../middl.js");
 
 const reviewsController = require("../controllers/ControllerReview.js")
 
-//Reviews
-//Post Route of reviews
-router.post("/", isLoggedIn, wrapAsync(reviewsController.CreateReviews))
-
-//Delete Reviews  Route
+router.post("/", isLoggedIn, wrapAsync(reviewsController.CreateReviews));
 
 router.delete("/:reviewId", isLoggedIn,
   wrapAsync(reviewsController.DeleteController)

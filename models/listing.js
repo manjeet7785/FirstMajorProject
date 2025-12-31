@@ -76,27 +76,13 @@ const listeningSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
-  // geometry: {
-  //   type: {
-  //     type: String,
-  //     enum: ["Point"],
-  //     required: true
-  //   },
-  // },
-  // category: {
-  //   type: String,
-  //   enum: ["mountains,Treading"] //and other filters
-  // }
 });
-
-
 listeningSchema.post("findOneAndDelete", async (show) => {
   if (show) {
     await reviews.deleteMany({ _id: { $in: show.reviews } })
   }
-
 })
-// db.users.dropIndex('username_1')
+
 const List = mongooes.model("List", listeningSchema)
 module.exports = List;
 

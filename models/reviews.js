@@ -1,8 +1,5 @@
 const mongooes = require("mongoose")
 const Schema = mongooes.Schema;
-
-
-
 const reviewSchema = new Schema({
   comment: String,
   rating: {
@@ -14,7 +11,6 @@ const reviewSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-
   author: {
     type: Schema.Types.ObjectId,
     ref: "User"

@@ -1,8 +1,6 @@
-
 const mongooes = require("mongoose")
 const Schema = mongooes.Schema;
 const passportLocal = require("passport-local-mongoose");
-
 
 const userSchema = new Schema({
   username: {
@@ -19,5 +17,5 @@ const userSchema = new Schema({
 userSchema.plugin(passportLocal, {
   usernameField: 'email',
 
-}); // ye username ,salting,hashing automatically add kr deta hai
+});
 module.exports = mongooes.model('User', userSchema);
