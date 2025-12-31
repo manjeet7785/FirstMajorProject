@@ -23,9 +23,6 @@ const User = require("./models/user.js")
 const url = process.env.DB_URL;
 
 
-app.get("/", (req, res) => {
-  res.send("hello")
-})
 
 async function main() {
   try {
@@ -91,16 +88,15 @@ app.use("/listings/:id/reviews", reviewsRoute);
 
 
 
-// This middleware catches any request that hasn't been handled by routes above it.
+// ****** middleware ******
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
-// custom error handle isko create ki help se kr rhe hai 
+
 
 
 
 app.use((err, req, res, next) => {
-  // Provide default values for safety
   let { statusCode = 500, message = "Something Went Wrong!" } = err;
   res.render("error.ejs", { err })
 })
